@@ -1,0 +1,43 @@
+version: '3'
+services:
+  www:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "8081:8081"
+    volumes:
+      - ./conf/nginx/conf.d:/etc/nginx/conf.d
+      - www:/www
+    links:
+      - gogs
+      - nextcloud
+      - jenkins
+  db:
+    image: chenxinaz/pg_jieba:alpine
+    environment:
+      - POSTGRES_PASSWORD=asdfasdf123
+    volumes:
+      - pg:/var/lib/postgresql/data
+      - ./conf/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+  gogs:
+    image: gogs/gogs
+    volumes:
+      - gogs:/data
+    links:
+      - db
+  nextcloud:
+    image: linuxserver/nextcloud
+    volumes:
+      - nextcloud:/data
+  jenkins:
+    image: jenkins/jenkins:lts-alpine
+    environment:
+      - JENKINS_OPTS --prefix=/jenkins
+    volumes:
+      - jenkins:/var/jenkins_home
+volumes:
+  gogs:
+  pg:
+  www:
+  nextcloud:
+  jenkins:
