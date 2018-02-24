@@ -4,14 +4,11 @@ services:
     image: nginx:alpine
     ports:
       - "80:80"
-      - "8081:8081"
     volumes:
       - ./conf/nginx/conf.d:/etc/nginx/conf.d
       - www:/www
     links:
       - gogs
-      - nextcloud
-      - jenkins
   db:
     image: chenxinaz/pg_jieba:alpine
     environment:
@@ -21,23 +18,20 @@ services:
       - ./conf/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
   gogs:
     image: gogs/gogs
+    ports:
+      - "3000:3000"
     volumes:
       - gogs:/data
     links:
       - db
-  nextcloud:
-    image: linuxserver/nextcloud
-    volumes:
-      - nextcloud:/data
   jenkins:
     image: jenkins/jenkins:lts-alpine
-    environment:
-      - JENKINS_OPTS --prefix=/jenkins
+    ports:
+      - "8080:8080"
     volumes:
       - jenkins:/var/jenkins_home
 volumes:
   gogs:
   pg:
   www:
-  nextcloud:
   jenkins:
