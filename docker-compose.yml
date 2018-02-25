@@ -28,7 +28,7 @@ services:
   jenkins:
     image: jenkins/jenkins:lts-alpine
     environment:
-      - JENKINS_OPTS "--prefix=/jenkins"
+      - JENKINS_OPTS="--prefix=/jenkins"
     ports:
       - "8080:8080"
     volumes:
