@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export MSYS_NO_PATHCONV=1
+
 volumes="-v $PWD/data:/backup"
 prefix="devstack_"
 backup="cd /data && find . -type d -maxdepth 1 -mindepth 1 -exec tar zcvf /backup/{}.tar.gz {} \\;"
