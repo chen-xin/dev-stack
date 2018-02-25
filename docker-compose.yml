@@ -19,6 +19,8 @@ services:
       - ./conf/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
   gogs:
     image: gogs/gogs
+    ports:
+      - "3000:3000"
     volumes:
       - gogs:/data
     links:
@@ -27,6 +29,8 @@ services:
     image: jenkins/jenkins:lts-alpine
     environment:
       - JENKINS_OPTS "--prefix=/jenkins"
+    ports:
+      - "8080:8080"
     volumes:
       - jenkins:/var/jenkins_home
 volumes:
