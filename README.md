@@ -28,9 +28,9 @@ Specifaction
 - deploy if test pass
 - generate test result tag in repo's README
 
-tasks
+Tasks
 ----
-- [ ] install services
+- [ ] install and integrate services
     - [x] www
     - [x] gogs
     - [x] jenkins
@@ -38,4 +38,12 @@ tasks
     - [ ] python
     - [ ] node
     - [ ] drone
-- [ ] integretate services
+- [ ] testings
+    - [x] auto execute jenkins test job when repo pushed to gogs
+    - [ ] auto execute jenkins test job when repo pushed to gitea
+    - [ ] auto deploy when jenkins test pass 
+    - [x] auto execute drone test job when repo pushed to gogs
+    - [ ] auto execute drone test job when repo pushed to gitea
+    - [ ] auto deploy when drone test pass 
+- [ ] documentation
+    - [ ] Setup my owe develop sites

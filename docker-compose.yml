@@ -69,5 +69,3 @@ services:
       postgres:
         aliases:
           - gitea 
-    ports:
-      - "3300:3000"

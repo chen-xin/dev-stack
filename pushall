@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo -e "\npushing coding....."
+git push coding
+
+echo -e "\npushing gitee....."
+git push gitee
+
+echo -e "\npushing github....."
+git push github
+
+echo -e "\npushing gitea....."
+git push gitea
+
+echo -e "\npushing gogs....."
+git push gogs
