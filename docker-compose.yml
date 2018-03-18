@@ -1,4 +1,15 @@
 version: '3'
+
+volumes:
+  gogs:
+  pg:
+  gitea:
+  www:
+  jenkins:
+networks:
+  www:
+  postgres:
+
 services:
   www:
     image: nginx:alpine
@@ -7,34 +18,56 @@ services:
     volumes:
       - ./conf/nginx/conf.d:/etc/nginx/conf.d
       - www:/www
-    links:
-      - gogs
-      - jenkins
-  db:
+    networks:
+      www:
+        aliases:
+          - www
+  postgres:
     image: chenxinaz/pg_jieba:alpine
     environment:
       - POSTGRES_PASSWORD=asdfasdf123
     volumes:
       - pg:/var/lib/postgresql/data
       - ./conf/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    networks:
+      postgres:
+        aliases:
+          - postgres
   gogs:
     image: gogs/gogs
-    ports:
-      - "3000:3000"
     volumes:
       - gogs:/data
-    links:
-      - db
+    networks:
+      www:
+        aliases:
+          - gogs
+      postgres:
+        aliases:
+          - gogs
   jenkins:
-    image: jenkins/jenkins:lts-alpine
+    image: jenkinsci/blueocean
+    user: root
     environment:
       - JENKINS_OPTS="--prefix=/jenkins"
     ports:
       - "8080:8080"
     volumes:
       - jenkins:/var/jenkins_home
-volumes:
-  gogs:
-  pg:
-  www:
-  jenkins:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      www:
+        aliases:
+          - jenkins
+  gitea:
+    image: gitea/gitea
+    volumes:
+      - gitea:/data
+    networks:
+      www:
+        aliases:
+          - gitea
+      postgres:
+        aliases:
+          - gitea 
+    ports:
+      - "3300:3000"
