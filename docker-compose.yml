@@ -1,3 +1,4 @@
+
 version: '3'
 
 volumes:
@@ -5,10 +6,11 @@ volumes:
   pg:
   gitea:
   www:
-  jenkins:
+  drone:
 networks:
   www:
   postgres:
+  drone:
 
 services:
   www:
@@ -16,48 +18,26 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./conf/nginx/conf.d:/etc/nginx/conf.d
+      - ../data/log/nginx:/var/log/nginx
+      - ../conf/nginx/conf.e:/etc/nginx/conf.d
       - www:/www
     networks:
       www:
         aliases:
           - www
+
   postgres:
     image: chenxinaz/pg_jieba:alpine
     environment:
       - POSTGRES_PASSWORD=asdfasdf123
     volumes:
       - pg:/var/lib/postgresql/data
-      - ./conf/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ../conf/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     networks:
       postgres:
         aliases:
           - postgres
-  gogs:
-    image: gogs/gogs
-    volumes:
-      - gogs:/data
-    networks:
-      www:
-        aliases:
-          - gogs
-      postgres:
-        aliases:
-          - gogs
-  jenkins:
-    image: jenkinsci/blueocean
-    user: root
-    environment:
-      - JENKINS_OPTS="--prefix=/jenkins"
-    ports:
-      - "8080:8080"
-    volumes:
-      - jenkins:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      www:
-        aliases:
-          - jenkins
+
   gitea:
     image: gitea/gitea
     volumes:
@@ -69,3 +49,41 @@ services:
       postgres:
         aliases:
           - gitea 
+
+  drone-server:
+    image: drone/drone
+    volumes:
+      - drone:/var/lib/drone/
+    restart: always
+    environment:
+      - DRONE_OPEN=true
+      - DRONE_HOST=http://drone.xin.me
+      - DRONE_GITEA=true
+      - DRONE_GITEA_URL=http://gitea:3000
+      - DRONE_SECRET=c676-9241-d916-3d6a
+    networks:
+      www:
+        aliases:
+          - drone 
+      postgres:
+        aliases:
+          - drone 
+      drone:
+        aliases:
+          - drone-server
+
+  drone-agent:
+    image: drone/agent
+    command: agent
+    restart: always
+    depends_on:
+      - drone-server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DRONE_SERVER=drone-server:9000
+      - DRONE_SECRET=c676-9241-d916-3d6a
+    networks:
+      drone:
+        aliases:
+          - drone-agent
