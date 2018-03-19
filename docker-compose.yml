@@ -4,7 +4,6 @@ version: '3'
 volumes:
   gogs:
   pg:
-  gitea:
   www:
   drone:
 networks:
@@ -18,8 +17,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ../data/log/nginx:/var/log/nginx
-      - ../conf/nginx/conf.e:/etc/nginx/conf.d
+      - ./data/log/nginx:/var/log/nginx
+      - ./conf/nginx/conf.e:/etc/nginx/conf.d
       - www:/www
     networks:
       www:
@@ -32,23 +31,23 @@ services:
       - POSTGRES_PASSWORD=asdfasdf123
     volumes:
       - pg:/var/lib/postgresql/data
-      - ../conf/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./conf/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     networks:
       postgres:
         aliases:
           - postgres
 
-  gitea:
-    image: gitea/gitea
+  gogs:
+    image: gogs/gogs
     volumes:
-      - gitea:/data
+      - gogs:/data
     networks:
       www:
         aliases:
-          - gitea
+          - gogs
       postgres:
         aliases:
-          - gitea 
+          - gogs 
 
   drone-server:
     image: drone/drone
@@ -59,7 +58,7 @@ services:
       - DRONE_OPEN=true
       - DRONE_HOST=http://drone.xin.me
       - DRONE_GITEA=true
-      - DRONE_GITEA_URL=http://gitea:3000
+      - DRONE_GITEA_URL=http://gogs:3000
       - DRONE_SECRET=c676-9241-d916-3d6a
     networks:
       www:
