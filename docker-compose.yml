@@ -14,12 +14,16 @@ networks:
 services:
   www:
     image: nginx:alpine
+    restart: always
     ports:
       - "80:80"
     volumes:
       - ./data/log/nginx:/var/log/nginx
-      - ./conf/nginx/conf.e:/etc/nginx/conf.d
+      - ./conf/nginx/conf.d:/etc/nginx/conf.d
       - www:/www
+    depends_on:
+      - drone-server
+      - gogs
     networks:
       www:
         aliases:
@@ -41,10 +45,13 @@ services:
     image: gogs/gogs
     volumes:
       - gogs:/data
+    depends_on:
+      - postgres
     networks:
       www:
         aliases:
           - gogs
+          - gogs.xin.me
       postgres:
         aliases:
           - gogs 
@@ -57,8 +64,8 @@ services:
     environment:
       - DRONE_OPEN=true
       - DRONE_HOST=http://drone.xin.me
-      - DRONE_GITEA=true
-      - DRONE_GITEA_URL=http://gogs:3000
+      - DRONE_GOGS=true
+      - DRONE_GOGS_URL=http://gogs:3000
       - DRONE_SECRET=c676-9241-d916-3d6a
     networks:
       www:
