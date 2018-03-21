@@ -27,7 +27,12 @@ services:
     networks:
       www:
         aliases:
-          - www
+          - xin.me
+          - gogs.xin.me
+          - gitea.xin.me
+          - jenkins.xin.me
+          - drone.xin.me
+          - demo.xin.me
 
   postgres:
     image: chenxinaz/pg_jieba:alpine
@@ -38,8 +43,6 @@ services:
       - ./conf/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     networks:
       postgres:
-        aliases:
-          - postgres
 
   gogs:
     image: gogs/gogs
@@ -49,12 +52,7 @@ services:
       - postgres
     networks:
       www:
-        aliases:
-          - gogs
-          - gogs.xin.me
       postgres:
-        aliases:
-          - gogs 
 
   drone-server:
     image: drone/drone
@@ -65,18 +63,11 @@ services:
       - DRONE_OPEN=true
       - DRONE_HOST=http://drone.xin.me
       - DRONE_GOGS=true
-      - DRONE_GOGS_URL=http://gogs:3000
+      - DRONE_GOGS_URL=http://gogs.xin.me
       - DRONE_SECRET=c676-9241-d916-3d6a
     networks:
       www:
-        aliases:
-          - drone 
       postgres:
-        aliases:
-          - drone 
-      drone:
-        aliases:
-          - drone-server
 
   drone-agent:
     image: drone/agent
@@ -90,6 +81,4 @@ services:
       - DRONE_SERVER=drone-server:9000
       - DRONE_SECRET=c676-9241-d916-3d6a
     networks:
-      drone:
-        aliases:
-          - drone-agent
+      www:
