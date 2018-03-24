@@ -20,12 +20,6 @@ services:
       - www:/www
     networks:
       www:
-        aliases:
-          - www.xin.me
-          - xin.me
-          - gogs.xin.me
-          - gitea.xin.me
-          - jenkins.xin.me
   postgres:
     image: chenxinaz/pg_jieba:alpine
     environment:
