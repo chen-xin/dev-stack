@@ -26,13 +26,6 @@ services:
       - gogs
     networks:
       www:
-        aliases:
-          - xin.me
-          - gogs.xin.me
-          - gitea.xin.me
-          - jenkins.xin.me
-          - drone.xin.me
-          - demo.xin.me
 
   postgres:
     image: chenxinaz/pg_jieba:alpine
