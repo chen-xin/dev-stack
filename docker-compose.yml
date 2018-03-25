@@ -9,7 +9,6 @@ volumes:
 networks:
   www:
   postgres:
-  drone:
 
 services:
   www:
@@ -23,9 +22,13 @@ services:
       - www:/www
     depends_on:
       - drone-server
-      - gogs
+      - gitea
     networks:
       www:
+        aliases:
+          - xin.local
+          - gitea.xin.local
+          - drone.xin.local
 
   postgres:
     image: chenxinaz/pg_jieba:alpine
@@ -37,8 +40,8 @@ services:
     networks:
       postgres:
 
-  gogs:
-    image: gogs/gogs
+  gitea:
+    image: gitea/gitea
     volumes:
       - gogs:/data
     depends_on:
@@ -54,10 +57,11 @@ services:
     restart: always
     environment:
       - DRONE_OPEN=true
-      - DRONE_HOST=http://drone.xin.me
-      - DRONE_GOGS=true
-      - DRONE_GOGS_URL=http://gogs.xin.me
+      - DRONE_HOST=http://drone.xin.local
+      - DRONE_GITEA=true
+      - DRONE_GITEA_URL=http://gitea.xin.local
       - DRONE_SECRET=c676-9241-d916-3d6a
+      - DRONE_NETWORK=devstack_www
     networks:
       www:
       postgres:
