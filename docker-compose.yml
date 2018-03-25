@@ -2,7 +2,7 @@
 version: '3'
 
 volumes:
-  gogs:
+  gitea:
   pg:
   www:
   drone:
@@ -43,7 +43,7 @@ services:
   gitea:
     image: gitea/gitea
     volumes:
-      - gogs:/data
+      - gitea:/data
     depends_on:
       - postgres
     networks:

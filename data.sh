@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 export MSYS_NO_PATHCONV=1
 
