@@ -1,0 +1,82 @@
+
+version: '3'
+
+volumes:
+  gitea:
+  pg:
+  www:
+  drone:
+networks:
+  www:
+  postgres:
+
+services:
+  www:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./data/log/nginx:/var/log/nginx
+      - ./conf/nginx/conf.d:/etc/nginx/conf.d
+      - www:/www
+    depends_on:
+      - drone-server
+      - gitea
+    networks:
+      www:
+        aliases:
+          - xin.local
+          - gitea.xin.local
+          - drone.xin.local
+
+  postgres:
+    image: chenxinaz/pg_jieba:alpine
+    environment:
+      - POSTGRES_PASSWORD=asdfasdf123
+    volumes:
+      - pg:/var/lib/postgresql/data
+      - ./conf/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    networks:
+      postgres:
+
+  gitea:
+    image: gitea/gitea
+    volumes:
+      - gitea:/data
+    depends_on:
+      - postgres
+    networks:
+      www:
+      postgres:
+
+  drone-server:
+    image: drone/drone
+    volumes:
+      - drone:/var/lib/drone/
+    restart: always
+    environment:
+      - DRONE_ADMIN=xin
+      - DRONE_OPEN=true
+      - DRONE_HOST=http://drone.xin.local
+      - DRONE_GITEA=true
+      - DRONE_GITEA_URL=http://gitea.xin.local
+      - DRONE_SECRET=c676-9241-d916-3d6a
+      - DRONE_NETWORK=devstack_www
+    networks:
+      www:
+      postgres:
+
+  drone-agent:
+    image: drone/agent
+    command: agent
+    restart: always
+    depends_on:
+      - drone-server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DRONE_SERVER=drone-server:9000
+      - DRONE_SECRET=c676-9241-d916-3d6a
+    networks:
+      www:
