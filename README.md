@@ -1,6 +1,8 @@
 My site stack
 =============
 
+**IMPORTANT**
+for drone agent to work, set `COMPOSE_CONVERT_WINDOWS_PATHS=1` or you cannot mount `/var/docker.sock:/var/docker.sock`
 Build my local all-in-one develop, blogging site.
 
 Services
