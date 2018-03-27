@@ -1,16 +1,10 @@
 #!/bin/bash
 
-echo -e "\npushing coding....."
-git push coding
+arg=${@:-$(git branch | grep \* | cut -d ' ' -f2)}
 
-echo -e "\npushing gitee....."
-git push gitee
+for i in 'coding' 'gitee' 'github' 'gitea' 'gogs'
+do
+  echo -e "\npushing $i $arg....."
+  git push $i $arg 
+done
 
-echo -e "\npushing github....."
-git push github
-
-echo -e "\npushing gitea....."
-git push gitea
-
-echo -e "\npushing gogs....."
-git push gogs

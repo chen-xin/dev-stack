@@ -1,12 +1,9 @@
 #!/bin/sh
 
-export MSYS_NO_PATHCONV=1
+current_branch=$(git branch | grep \* | cut -d ' ' -f2)
 
-docker run \
-  --rm \
-  -u root \
-  -p 8088:8080 \
-  -v jenkins-data:/var/jenkins_home \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v "$HOME":/home \
-  jenkinsci/blueocean
+arg=${@:-$(git branch | grep \* | cut -d ' ' -f2)}
+
+echo $current_branch
+
+echo $arg
