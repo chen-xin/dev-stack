@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# scripts with name like "git-*" can be executed by git.
+# simply copy this file to execute path, e.g. /usr/bin,
+# then we can do "git pushall"
+# the only thing required was name this script with "git-*"
+
+arg=${@:-$(git branch | grep \* | cut -d ' ' -f2)}
+
+#for i in 'coding' 'gitee' 'github' 'gitea' 'gogs'
+for i in $(git remote show)
+do
+  echo -e "\npushing $i $arg....."
+  git push $i $arg 
+done
+
