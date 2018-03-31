@@ -29,6 +29,14 @@ services:
           - xin.local
           - gitea.xin.local
           - drone.xin.local
+  rsync:
+    image: chenxinaz/sshrsync
+    environment:
+      - ROOT_PASSWORD=foofoo
+    volumes:
+      - www:/www
+    networks:
+      www:
 
   postgres:
     image: chenxinaz/pg_jieba:alpine

@@ -1,6 +1,6 @@
 #!/bin/bash
 # set RSYNC_PASSWORD to avoid password prompt
-# RUN: RSYNC_USER=nobody RSYNC_SERVER=0.0.0.0:0000 RSYNC_PASSWORD=awesome rsync.sh backup
+# RUN: time RSYNC_USER=nobody RSYNC_SERVER=0.0.0.0:0000 RSYNC_PASSWORD=awesome ./rsync.sh backup
 
 export MSYS_NO_PATHCONV=1
 
@@ -11,12 +11,15 @@ for i in $(docker volume ls -q | grep devstack | sed 's#'"$prefix"'##g')
   do volumes+=" -v $prefix$i:/data/$i "
 done
 
+SERVER_PATH="rsync://${RSYNC_USER}@${RSYNC_SERVER}/data/dev-stack/"
+RSYNC_CMD="cd data && rsync -auvz --delete --progress"
+
 case $@ in
   backup)
-    op="cd data && rsync -auvz . rsync://${RSYNC_USER}@${RSYNC_SERVER}/data/dev-stack/"
+    op="${RSYNC_CMD} . ${SERVER_PATH}"
     ;;
   restore)
-    op="cd data && rsync -auvz rsync://${RSYNC_USER}@${RSYNC_SERVER}/data/dev-stack/ ."
+    op="${RSYNC_CMD} ${SERVER_PATH} ."
     ;;
   *)
     echo "usage: data.sh [backup|restore]"
