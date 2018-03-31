@@ -41,5 +41,5 @@ echo
 echo -------------------------
 
 # docker volume prune -f
-docker run --rm --env RSYNC_PASSWORD=${RSYNC_PASSWORD} $volumes chenxinaz/rsync sh -c "${op}"
+docker run --rm --env RSYNC_PASSWORD=${RSYNC_PASSWORD} $volumes chenxinaz/sshrsync sh -c "${op}"
 
