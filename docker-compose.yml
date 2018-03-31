@@ -65,6 +65,7 @@ services:
     restart: always
     environment:
       - DRONE_ADMIN=xin
+      - DRONE_HOST=http://drone.xin.local
       - DRONE_GITEA=true
       - DRONE_GITEA_URL=http://gitea.xin.local
       - DRONE_SECRET=c676-9241-d916-3d6a
