@@ -2,7 +2,8 @@
 
 arg=${@:-$(git branch | grep \* | cut -d ' ' -f2)}
 
-for i in 'coding' 'gitee' 'github' 'gitea' 'gogs'
+#for i in 'coding' 'gitee' 'github' 'gitea' 'gogs'
+for i in $(git remote show)
 do
   echo -e "\npushing $i $arg....."
   git push $i $arg 
