@@ -1,8 +1,6 @@
 My site stack
 =============
 
-<<<<<<< HEAD
-=======
 **IMPORTANT**
 for drone agent to work, set `COMPOSE_CONVERT_WINDOWS_PATHS=1` or you cannot mount `/var/docker.sock:/var/docker.sock`
 
