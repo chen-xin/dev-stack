@@ -12,13 +12,15 @@ networks:
 
 services:
   www:
-    image: nginx:alpine
+    image: chenxinaz/nginx-ssl
     restart: always
     ports:
+      - "443:443"
       - "80:80"
     volumes:
       - ./data/log/nginx:/var/log/nginx
       - ./conf/nginx/conf.d:/etc/nginx/conf.d
+      - ./conf/nginx/snippets:/etc/nginx/snippets
       - www:/www
     depends_on:
       - drone-server
