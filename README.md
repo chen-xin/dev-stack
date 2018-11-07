@@ -8,7 +8,11 @@ For git usage:
 
 1. Download nginx ssl cert: `docker cp devstack_www_1:/etc/ssl/certs/mysite.crt ./`
 2. Tell git to trust the cert: `git config --global http.sslCAInfo=mysite.crt`
-
+3. Under windows git-bash, the above config does not work, need to modify ~/.gitconfig file as:
+```
+[http]
+sslCAInfo = <path to cert file>
+```
 
 Build my local all-in-one develop, blogging site.
 
