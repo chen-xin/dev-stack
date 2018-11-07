@@ -17,6 +17,10 @@ services:
     ports:
       - "443:443"
       - "80:80"
+    environment:
+      - DH_SIZE=2048
+      - SAN=DNS:*.me.local, DNS:me.local, DNS:*.me.n2n, DNS:me.n2n
+      - SUBJ=/C=US/ST=Denial/L=Springfield/O=Me/CN=www.me.local
     volumes:
       - ./data/log/nginx:/var/log/nginx
       - ./conf/nginx/conf.d:/etc/nginx/conf.d
@@ -28,9 +32,9 @@ services:
     networks:
       www:
         aliases:
-          - xin.local
-          - gitea.xin.local
-          - drone.xin.local
+          - me.local
+          - gitea.me.local
+          - drone.me.local
   rsync:
     image: chenxinaz/sshrsync
     environment:
@@ -67,9 +71,9 @@ services:
     restart: always
     environment:
       - DRONE_ADMIN=xin
-      - DRONE_HOST=http://drone.xin.local
+      - DRONE_HOST=http://drone.me.local
       - DRONE_GITEA=true
-      - DRONE_GITEA_URL=http://gitea.xin.local
+      - DRONE_GITEA_URL=http://gitea.me.local
       - DRONE_SECRET=c676-9241-d916-3d6a
       - DRONE_NETWORK=devstack_www
     networks:
