@@ -4,6 +4,12 @@ My site stack
 **IMPORTANT**
 for drone agent to work, set `COMPOSE_CONVERT_WINDOWS_PATHS=1` or you cannot mount `/var/docker.sock:/var/docker.sock`
 
+For git usage: 
+
+1. Download nginx ssl cert: `docker cp devstack_www_1:/etc/ssl/certs/mysite.crt ./`
+2. Tell git to trust the cert: `git config --global http.sslCAInfo=mysite.crt`
+
+
 Build my local all-in-one develop, blogging site.
 
 Services
