@@ -71,9 +71,9 @@ services:
     restart: always
     environment:
       - DRONE_ADMIN=xin
-      - DRONE_HOST=http://drone.me.local
+      - DRONE_HOST=https://drone.me.local
       - DRONE_GITEA=true
-      - DRONE_GITEA_URL=http://gitea.me.local
+      - DRONE_GITEA_URL=https://gitea.me.local
       - DRONE_SECRET=c676-9241-d916-3d6a
       - DRONE_NETWORK=devstack_www
     networks:
