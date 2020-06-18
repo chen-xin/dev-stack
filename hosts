@@ -19,10 +19,10 @@
 # localhost name resolution is handled within DNS itself.
 #	127.0.0.1       localhost
 #	::1             localhost
-127.0.0.1	www.xin.me
-127.0.0.1	xin.me
-127.0.0.1	gogs.xin.me
-127.0.0.1	gitea.xin.me
-127.0.0.1	jenkins.xin.me
-127.0.0.1	drone.xin.me
-127.0.0.1	demo.xin.me
+127.0.0.1	www.xin.local
+127.0.0.1	xin.local
+# 127.0.0.1	gogs.xin.local
+127.0.0.1	gitea.xin.local
+# 127.0.0.1	jenkins.xin.local
+# 127.0.0.1	drone.xin.local
+# 127.0.0.1	demo.xin.local
