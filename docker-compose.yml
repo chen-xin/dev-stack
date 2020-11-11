@@ -1,11 +1,9 @@
 version: '3'
 
 volumes:
-  gogs:
   pg:
   gitea:
   www:
-  jenkins:
 networks:
   www:
   postgres:
@@ -20,31 +18,17 @@ services:
       - www:/www
     networks:
       www:
+    restart: unless-stopped
   postgres:
     image: chenxinaz/pg_jieba:alpine
     environment:
-      - POSTGRES_PASSWORD=asdfasdf123
+      - POSTGRES_PASSWORD=W0FyHnAkc1JTgQMKocSByUCHtfnpuO8ZCGkdX+rheW0=
     volumes:
       - pg:/var/lib/postgresql/data
       - ./conf/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     networks:
       postgres:
-  gogs:
-    image: gogs/gogs
-    volumes:
-      - gogs:/data
-    networks:
-      www:
-      postgres:
-  jenkins:
-    image: jenkinsci/blueocean
-    user: root
-    volumes:
-      - jenkins:/var/jenkins_home
-      - www:/www
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      www:
+    restart: unless-stopped
   gitea:
     image: gitea/gitea
     volumes:
@@ -52,3 +36,4 @@ services:
     networks:
       www:
       postgres:
+    restart: unless-stopped
