@@ -8,6 +8,7 @@
 #                      in case of restore, if no such YYYY-mm-dd_HH-MM-SS dir exists,
 #                      will try to find backup data in $backup_storage_dir
 
+prefix="${PWD##*/}_"
 if docker ps | grep $prefix
 then
   echo "Containers are RUNNING! Please run 'docker-compose stop' to stop them before backup or restore."
@@ -15,8 +16,6 @@ then
 else
   echo "NOT Running!"
 fi
-
-prefix="${PWD##*/}_"
 
 backup="cd /data && find . -type d -maxdepth 1 -mindepth 1 -exec tar zcvf /backup/{}.tar.gz {} \\;"
 restore="cd /backup && ls *.tar.gz | xargs -I filename tar zxvf filename -C /data"
